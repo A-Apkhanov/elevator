@@ -7,7 +7,8 @@
         xmlns="http://www.w3.org/2000/svg"
         width="200"
         height="200"
-        class="direction_up active"
+        class="direction_up"
+        :class="{ active: goingUp }"
       >
         <path
           data-v-049a135c
@@ -21,7 +22,8 @@
         xmlns="http://www.w3.org/2000/svg"
         width="200"
         height="200"
-        class="direction_down active"
+        class="direction_down"
+        :class="{ active: goingDown }"
       >
         <path
           data-v-049a135c
@@ -43,6 +45,8 @@ export default {
   name: 'IndicationComponent',
   props: {
     floor: Number,
+    goingUp: Boolean,
+    goingDown: Boolean,
   },
   computed: {
     displayFloor() {

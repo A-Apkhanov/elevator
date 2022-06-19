@@ -10,9 +10,10 @@
           ref="elevator"
           class="elevator-position"
           :door-open="doorOpen"
+          :style="{ bottom: `${25 + (currentFloor - 1) * 205}px` }"
       >
         <IndicationComponent
-            :floor="currentFloor"
+            :floor="(doorOpen && currentFloor) || (queue[0] || currentFloor)"
             :going-up="goingUp"
             :going-down="goingDown"
         />
@@ -66,7 +67,14 @@ export default {
       goingDown: false,
       queue: [],
       queueDouble: [],
+      timer: null,
     };
+  },
+  mounted() {
+    this.timer = setInterval(this.run, 1000);
+  },
+  beforeUnmount() {
+    clearInterval(this.timer);
   },
   computed: {
     idle() {
@@ -79,6 +87,90 @@ export default {
         this.queue.push(floor);
       } else if (this.queue.includes(floor) && !this.queueDouble.includes(floor)) {
         this.queueDouble.push(floor);
+      }
+    },
+
+    stopBy() {
+      if (this.timer) {
+        clearInterval(this.timer);
+      }
+      this.doorOpen = true;
+      this.goingDown = false;
+      this.goingUp = false;
+      setTimeout(() => {
+        this.doorOpen = false;
+        setTimeout(() => {
+          this.timer = setInterval(this.run, 1000);
+        }, 0);
+      }, 3000);
+    },
+
+    changeDirection() {
+      if (this.queue.length === 0) {
+        this.goingDown = false;
+        this.goingUp = false;
+      } else if (this.currentFloor < this.queue[0]) {
+        this.goingDown = false;
+        this.goingUp = true;
+      } else if (this.currentFloor > this.queue[0]) {
+        this.goingDown = true;
+        this.goingUp = false;
+      }
+    },
+
+    removeFloor(floor) {
+      const floorIndex = this.queue.indexOf(floor);
+      const floorDoubleIndex = this.queueDouble.indexOf(floor);
+      if (~floorIndex) {
+        this.queue.splice(floorIndex, 1);
+      }
+      if (~floorDoubleIndex) {
+        this.queueDouble.splice(floorDoubleIndex, 1);
+      }
+    },
+
+    goUp() {
+      if (this.goingUp) {
+        if (this.currentFloor < this.floorNum) {
+          this.currentFloor += 1;
+        }
+      }
+    },
+
+    goDown() {
+      if (this.goingDown) {
+        if (this.currentFloor > 1) {
+          this.currentFloor -= 1;
+        }
+      }
+    },
+
+    goOn() {
+      this.changeDirection();
+      if (this.goingUp && this.currentFloor < this.floorNum) {
+        this.goUp();
+      } else if (this.goingDown && this.currentFloor > 1) {
+        this.goDown();
+      }
+    },
+
+    run() {
+      let stopFlag = false;
+      const floor = this.currentFloor;
+
+      if (!this.idle) {
+        if (floor === this.queue[0]) {
+          this.removeFloor(floor);
+          stopFlag = true;
+        }
+
+        if (stopFlag) {
+          this.stopBy(floor);
+        } else {
+          this.goOn();
+        }
+      } else {
+        this.goOn();
       }
     },
   },
@@ -102,7 +194,6 @@ export default {
 
 .elevator-position {
   position: absolute;
-  bottom: 25px;
   left: 50%;
   transform: translateX(-50%);
 }

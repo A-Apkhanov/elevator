@@ -13,6 +13,8 @@
       >
         <IndicationComponent
             :floor="currentFloor"
+            :going-up="goingUp"
+            :going-down="goingDown"
         />
       </ElevatorComponent>
     </div>
@@ -55,6 +57,8 @@ export default {
       floorNum: 5,
       currentFloor: 1,
       doorOpen: false,
+      goingUp: false,
+      goingDown: false,
     };
   },
 };

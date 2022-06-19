@@ -9,6 +9,7 @@
           id="elevator"
           ref="elevator"
           class="elevator-position"
+          :door-open="doorOpen"
       >
         <IndicationComponent
             :floor="currentFloor"
@@ -53,6 +54,7 @@ export default {
     return {
       floorNum: 5,
       currentFloor: 1,
+      doorOpen: false,
     };
   },
 };

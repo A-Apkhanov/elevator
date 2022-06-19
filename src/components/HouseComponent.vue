@@ -30,8 +30,10 @@
         </template>
         <template #floor-content>
           <PanelComponent
+              :floor-number="floorNum - fl + 1"
               :is-active-request="this.queue.includes(floorNum - fl + 1)"
               :is-double-request="this.queueDouble.includes(floorNum - fl + 1)"
+              @get-elevator="floorRequest"
           />
         </template>
       </FloorComponent>
@@ -65,6 +67,15 @@ export default {
       queue: [],
       queueDouble: [],
     };
+  },
+  methods: {
+    floorRequest(floor) {
+      if (!this.queue.includes(floor) && !(this.currentFloor === floor && this.idle)) {
+        this.queue.push(floor);
+      } else if (this.queue.includes(floor) && !this.queueDouble.includes(floor)) {
+        this.queueDouble.push(floor);
+      }
+    },
   },
 };
 </script>

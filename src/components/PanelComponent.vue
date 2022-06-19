@@ -6,7 +6,11 @@
       xmlns="http://www.w3.org/2000/svg"
       width="200"
       height="200"
-      class="direction_up active"
+      class="direction_up"
+      :class="{
+        active: isActiveRequest && !isDoubleRequest,
+        double: isDoubleRequest,
+      }"
     >
       <path
         data-v-049a135c
@@ -23,7 +27,11 @@
       xmlns="http://www.w3.org/2000/svg"
       width="200"
       height="200"
-      class="direction_down double"
+      class="direction_down"
+      :class="{
+        active: isActiveRequest && !isDoubleRequest,
+        double: isDoubleRequest,
+      }"
     >
       <path
         data-v-049a135c
@@ -37,6 +45,10 @@
 <script>
 export default {
   name: 'PanelComponent',
+  props: {
+    isActiveRequest: Boolean,
+    isDoubleRequest: Boolean,
+  },
 };
 </script>
 

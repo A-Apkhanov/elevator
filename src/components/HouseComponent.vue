@@ -81,6 +81,19 @@ export default {
       return !(this.goingUp || this.goingDown);
     },
   },
+  watch: {
+    currentFloor(newCurrentFloor, oldCurrentFloor) {
+      const difference = newCurrentFloor - oldCurrentFloor;
+      const duration = 1000;
+      const draw = (progress) => {
+        this.$refs.elevator.$el.style.bottom = `${25 + (oldCurrentFloor - 1) * 205
+        + difference * progress * 205}px`;
+      };
+      const timing = (timeFraction) => timeFraction;
+
+      this.animate({ duration, timing, draw });
+    },
+  },
   methods: {
     floorRequest(floor) {
       if (!this.queue.includes(floor) && !(this.currentFloor === floor && this.idle)) {
@@ -172,6 +185,19 @@ export default {
       } else {
         this.goOn();
       }
+    },
+
+    animate({ timing, draw, duration }) {
+      const start = performance.now();
+      requestAnimationFrame(function animate(time) {
+        let timeFraction = (time - start) / duration;
+        if (timeFraction > 1) timeFraction = 1;
+        const progress = timing(timeFraction);
+        draw(progress);
+        if (timeFraction < 1) {
+          requestAnimationFrame(animate);
+        }
+      });
     },
   },
 };

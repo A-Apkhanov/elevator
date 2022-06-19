@@ -2,27 +2,31 @@
   <div class="house">
     <div class="elevator-shaft">
       <FloorComponent
-        v-for="fl in 10"
-        :key="'floor - ' + fl"
+          v-for="fl in floorNum"
+          :key="'floor - ' + fl"
       />
       <ElevatorComponent
-        id="elevator"
-        ref="elevator"
-        class="elevator-position"
+          id="elevator"
+          ref="elevator"
+          class="elevator-position"
       >
-        <IndicationComponent />
+        <IndicationComponent
+            :floor="currentFloor"
+        />
       </ElevatorComponent>
     </div>
     <div class="floors">
       <FloorComponent
-        v-for="fl in 10"
-        :key="'floor - ' + fl"
+          v-for="fl in floorNum"
+          :key="'floor - ' + fl"
       >
         <template #floor-header>
-          <FloorNumberComponent />
+          <FloorNumberComponent
+              :floor-number="floorNum - fl + 1"
+          />
         </template>
         <template #floor-content>
-          <PanelComponent />
+          <PanelComponent/>
         </template>
       </FloorComponent>
     </div>
@@ -45,6 +49,12 @@ export default {
     PanelComponent,
     FloorComponent,
   },
+  data() {
+    return {
+      floorNum: 5,
+      currentFloor: 1,
+    };
+  },
 };
 </script>
 
@@ -57,16 +67,19 @@ export default {
   max-width: 1100px;
   margin: 0 auto;
 }
+
 .elevator-shaft {
   position: relative;
   flex: 0 1 200px;
 }
+
 .elevator-position {
   position: absolute;
   bottom: 25px;
   left: 50%;
   transform: translateX(-50%);
 }
+
 .floors {
   flex: 1 1 auto;
 }

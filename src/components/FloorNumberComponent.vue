@@ -1,7 +1,7 @@
 <template>
   <div class="floor_number">
     <p>
-      10
+      {{ displayFloor }}
     </p>
   </div>
 </template>
@@ -9,6 +9,17 @@
 <script>
 export default {
   name: 'FloorNumberComponent',
+  props: {
+    floorNumber: Number,
+  },
+  computed: {
+    displayFloor() {
+      if ((`${this.floorNumber}`).length === 1) {
+        return `0${this.floorNumber}`;
+      }
+      return `${this.floorNumber}`;
+    },
+  },
 };
 </script>
 

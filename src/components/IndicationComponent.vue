@@ -32,7 +32,7 @@
     </div>
     <div class="elevator-indication_floor-info floor-info">
       <p class="floor-info_number">
-        10
+        {{ displayFloor }}
       </p>
     </div>
   </div>
@@ -41,6 +41,17 @@
 <script>
 export default {
   name: 'IndicationComponent',
+  props: {
+    floor: Number,
+  },
+  computed: {
+    displayFloor() {
+      if ((`${this.floor}`).length === 1) {
+        return `0${this.floor}`;
+      }
+      return `${this.floor}`;
+    },
+  },
 };
 </script>
 

@@ -1,17 +1,23 @@
 <template>
   <div
-    class="elevator"
+      class="elevator"
   >
-    <p class="elevator-state open">
-      Open
+    <p
+        class="elevator-state"
+        :class="[doorOpen ? 'open' : 'close']"
+    >
+      {{ doorOpen ? 'Open' : 'Close' }}
     </p>
-    <slot />
+    <slot/>
   </div>
 </template>
 
 <script>
 export default {
   name: 'ElevatorComponent',
+  props: {
+    doorOpen: Boolean,
+  },
 };
 </script>
 
@@ -27,6 +33,7 @@ export default {
   background-color: #0a9396;
   border-radius: 10px;
 }
+
 .elevator-state {
   display: inline-block;
   margin: 0;
@@ -35,11 +42,13 @@ export default {
   font-weight: 700;
   text-transform: uppercase;
 }
+
 .close {
   color: #9b2226;
   border: 2px solid #9b2226;
   border-radius: 10px;
 }
+
 .open {
   color: #94d2bd;
   border: 2px solid #94d2bd;

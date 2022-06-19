@@ -68,6 +68,11 @@ export default {
       queueDouble: [],
     };
   },
+  computed: {
+    idle() {
+      return !(this.goingUp || this.goingDown);
+    },
+  },
   methods: {
     floorRequest(floor) {
       if (!this.queue.includes(floor) && !(this.currentFloor === floor && this.idle)) {

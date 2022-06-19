@@ -29,7 +29,10 @@
           />
         </template>
         <template #floor-content>
-          <PanelComponent/>
+          <PanelComponent
+              :is-active-request="this.queue.includes(floorNum - fl + 1)"
+              :is-double-request="this.queueDouble.includes(floorNum - fl + 1)"
+          />
         </template>
       </FloorComponent>
     </div>
@@ -59,6 +62,8 @@ export default {
       doorOpen: false,
       goingUp: false,
       goingDown: false,
+      queue: [],
+      queueDouble: [],
     };
   },
 };

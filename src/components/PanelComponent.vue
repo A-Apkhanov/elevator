@@ -20,6 +20,7 @@
     </svg>
     <button
       class="floor-panel_button call-button"
+      @click="handleClickButton"
     />
     <svg
       data-v-049a135c
@@ -46,8 +47,14 @@
 export default {
   name: 'PanelComponent',
   props: {
+    floorNumber: Number,
     isActiveRequest: Boolean,
     isDoubleRequest: Boolean,
+  },
+  methods: {
+    handleClickButton() {
+      this.$emit('getElevator', this.floorNumber);
+    },
   },
 };
 </script>
